@@ -1,9 +1,10 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# dependencies
+# Node artifact files
 /node_modules
-/.pnp
-.pnp.js
+
+# Environment
+.env
 
 # testing
 /coverage
@@ -21,3 +22,16 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Applications
+*.app
+*.exe
+*.war
+
+# Large media files
+*.mp4
+*.tiff
+*.avi
+*.flv
+*.mov
+*.wmv
