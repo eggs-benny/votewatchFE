@@ -1,6 +1,5 @@
-import ReactDOM from "react-dom";
 import "./index.css";
-
+import { createRoot } from "react-dom/client";
 import reportWebVitals from "./reportWebVitals";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
@@ -10,11 +9,12 @@ import { BrowserRouter } from "react-router-dom";
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
 
-ReactDOM.render(
-  // <HelmetProvider>
+const container = document.getElementById("root");
+
+const root = createRoot(container);
+
+root.render(
   <BrowserRouter>
     <App />
-    </BrowserRouter>,
-  // </HelmetProvider>,
-  document.getElementById("root") as HTMLElement
+  </BrowserRouter>
 );
