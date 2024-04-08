@@ -1,5 +1,5 @@
 export interface MpData {
-    items: Member[]
+  items: Member[];
 }
 
 export interface Member {
