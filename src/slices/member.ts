@@ -15,7 +15,7 @@ export enum SliceStatusEnum {
 }
 
 interface MemberState {
-  member: Member | null;
+  selectedMember: Member | null;
   members: Member[];
   status: SliceStatusEnum;
   error: string;
@@ -23,7 +23,7 @@ interface MemberState {
 }
 
 const initialState: MemberState = {
-  member: null,
+  selectedMember: null,
   members: [],
   status: SliceStatusEnum.IDLE,
   error: null,
@@ -35,7 +35,11 @@ const initialState: MemberState = {
 const slice = createSlice({
   name: "member",
   initialState,
-  reducers: {},
+  reducers: {
+    setSelectedMember: (state, action) => {
+      state.selectedMember = action.payload;
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchMembersList.pending, (state) => {
@@ -79,5 +83,8 @@ export const fetchMembersList = createAsyncThunk<Member[], string>(
 export const reducer = slice.reducer;
 export const selectMembers = (state: RootState) => state.member.members;
 export const selectMembersStatus = (state: RootState) => state.member.status
+export const selectSelectedMember = (state: RootState) => state.member.selectedMember
+
+export const { setSelectedMember } = slice.actions;
 
 export default slice;

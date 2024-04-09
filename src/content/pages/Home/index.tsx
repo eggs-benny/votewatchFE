@@ -1,16 +1,20 @@
-import { Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { ReactNode } from "react";
 import MemberNameSearch from "./MemberNameSearch";
 import MemberPostcodeSearch from "./MemberPostcodeSearch";
-import { useSelector } from "src/store";
+import { useDispatch, useSelector } from "src/store";
 import {
   selectMembers,
   selectMembersStatus,
+  setSelectedMember,
   SliceStatusEnum
 } from "src/slices/member";
 import LoadingSpinner from "src/components/Shared/LoadingSpinner";
+import { useNavigate } from "react-router";
 
 function Home() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   // welcome
 
   // Find your local MP
@@ -29,9 +33,15 @@ function Home() {
     case SliceStatusEnum.SUCCEEDED:
       membersList = members?.map((member) => {
         return (
-          <Typography key={member.value.id}>
+          <Button
+            key={member.value.id}
+            onClick={()=>{
+              dispatch(setSelectedMember(member))
+              navigate(`/member/${member?.value?.id}`)
+            }}
+            >
             {member.value.nameDisplayAs}
-          </Typography>
+          </Button>
         );
       });
       break;

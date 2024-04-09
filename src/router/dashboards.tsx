@@ -9,6 +9,7 @@ const Loader = (Component) => (props) => (
 );
 
 const Home = Loader(lazy(() => import("src/content/pages/Home")));
+const Member = Loader(lazy(() => import("src/content/pages/Member")))
 
 const dashboardsRoutes = [
   {
@@ -18,6 +19,10 @@ const dashboardsRoutes = [
   {
     path: "home",
     element: <Home />
+  },
+  {
+    path: "member/:memberId",
+    element: <Member/>
   }
 ];
 
