@@ -1,30 +1,20 @@
 import { Search, KeyboardReturn } from "@mui/icons-material";
 import { Box, Typography, InputAdornment } from "@mui/material";
 import { useState } from "react";
+import { useDispatch } from "src/store";
 import { StyledTextField } from "src/components/Shared/StyledTextField";
-import { Member, MpData } from "src/models/member";
+import { fetchMembersList } from "src/slices/member";
 import * as Yup from "yup";
-
-interface MemberNameSearchProps {
-  setMembers: (memberData: Member[]) => void;
-}
 
 function validationSchema() {
   return Yup.string().min(3, "Minimum term 3 chars");
 }
 
-function MemberNameSearch({ setMembers }: MemberNameSearchProps) {
+function MemberNameSearch() {
+  const dispatch = useDispatch()
   const [query, setQuery] = useState<string | null>("");
   const [returnPrompt, setReturnPrompt] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-
-  const fetchMPList = async (mpName: string): Promise<any> => {
-    const response = await fetch(
-      `https://members-api.parliament.uk/api/Members/Search?Name=${mpName}`
-    );
-    const mpData: MpData = await response.json();
-    setMembers(mpData.items);
-  };
 
   const handleChange = (e) => {
     const value = e.target.value;
@@ -46,7 +36,7 @@ function MemberNameSearch({ setMembers }: MemberNameSearchProps) {
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       const value = e.target.value;
-      fetchMPList(value);
+      dispatch(fetchMembersList(value))
       e.preventDefault();
     }
   };
@@ -59,7 +49,7 @@ function MemberNameSearch({ setMembers }: MemberNameSearchProps) {
       <Box py={"5px"}>
         <StyledTextField
           type="search"
-          name="MP Search"
+          name="MP Name Search"
           value={query}
           label="Find MP..."
           placeholder="Hit enter to search"

@@ -1,7 +1,14 @@
 import { Typography } from "@mui/material";
-import { useState } from "react";
-import { Member } from "src/models/member";
-import MemberNameSearch from "./MemberSearch";
+import { ReactNode } from "react";
+import MemberNameSearch from "./MemberNameSearch";
+import MemberPostcodeSearch from "./MemberPostcodeSearch";
+import { useSelector } from "src/store";
+import {
+  selectMembers,
+  selectMembersStatus,
+  SliceStatusEnum
+} from "src/slices/member";
+import LoadingSpinner from "src/components/Shared/LoadingSpinner";
 
 function Home() {
   // welcome
@@ -12,20 +19,34 @@ function Home() {
   // Find an MP
 
   // MP List
-  const [members, setMembers] = useState<Member[]>([]);
+  const members = useSelector(selectMembers);
+  const fetchMembersStatus = useSelector(selectMembersStatus);
 
-  return (
-    <>
-      <Typography>Welcome to Votewatch</Typography>
-      <Typography>Enter your postcode to find your local MP:</Typography>
-      <MemberNameSearch setMembers={setMembers} />
-      {members?.map((member) => {
+  // const [localMp, setLocalMp] = useState<MpData>()
+
+  let membersList: ReactNode;
+  switch (fetchMembersStatus) {
+    case SliceStatusEnum.SUCCEEDED:
+      membersList = members?.map((member) => {
         return (
           <Typography key={member.value.id}>
             {member.value.nameDisplayAs}
           </Typography>
         );
-      })}
+      });
+      break;
+    case SliceStatusEnum.LOADING:
+      membersList = <LoadingSpinner />;
+      break;
+  }
+
+  return (
+    <>
+      <Typography>Welcome to Votewatch</Typography>
+      {/* <MemberPostcodeSearch */}
+
+      <MemberNameSearch />
+      {membersList}
     </>
   );
 }
