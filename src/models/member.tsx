@@ -57,3 +57,32 @@ export interface LatestParty {
   governmentType: null;
   isIndependentParty: boolean;
 }
+
+export interface ContactInfo {
+  value: Value[];
+  links: Link[];
+}
+
+export interface Link {
+  rel: string;
+  href: string;
+  method: string;
+}
+
+export interface Value {
+  type: string;
+  typeDescription: string;
+  typeId: number;
+  isPreferred: boolean;
+  isWebAddress: boolean;
+  notes: string;
+  line1: string;
+  line2: string;
+  line3: string;
+  line4: string;
+  line5: string;
+  postcode: string;
+  phone: string;
+  fax: string;
+  email: string;
+}
