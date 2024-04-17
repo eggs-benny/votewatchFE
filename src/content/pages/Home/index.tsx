@@ -1,9 +1,10 @@
 import { Button, Typography } from "@mui/material";
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import MemberNameSearch from "./MemberNameSearch";
 import MemberPostcodeSearch from "./MemberPostcodeSearch";
 import { useDispatch, useSelector } from "src/store";
 import {
+  clearMembers,
   selectMembers,
   selectMembersStatus,
   setSelectedMember,
@@ -28,6 +29,10 @@ function Home() {
 
   // const [localMp, setLocalMp] = useState<MpData>()
 
+  useEffect(() => {
+    dispatch(clearMembers());
+  }, [dispatch]);
+
   let membersList: ReactNode;
   switch (fetchMembersStatus) {
     case SliceStatusEnum.SUCCEEDED:
@@ -35,11 +40,11 @@ function Home() {
         return (
           <Button
             key={member.value.id}
-            onClick={()=>{
-              dispatch(setSelectedMember(member))
-              navigate(`/member/${member?.value?.id}`)
+            onClick={() => {
+              dispatch(setSelectedMember(member));
+              navigate(`/member/${member?.value?.id}`);
             }}
-            >
+          >
             {member.value.nameDisplayAs}
           </Button>
         );

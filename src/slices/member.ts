@@ -38,6 +38,9 @@ const slice = createSlice({
   reducers: {
     setSelectedMember: (state, action) => {
       state.selectedMember = action.payload;
+    },
+    clearMembers: (state) => {
+      state.members = null
     }
   },
   extraReducers: (builder) => {
@@ -85,6 +88,6 @@ export const selectMembers = (state: RootState) => state.member.members;
 export const selectMembersStatus = (state: RootState) => state.member.status
 export const selectSelectedMember = (state: RootState) => state.member.selectedMember
 
-export const { setSelectedMember } = slice.actions;
+export const { setSelectedMember, clearMembers } = slice.actions;
 
 export default slice;
