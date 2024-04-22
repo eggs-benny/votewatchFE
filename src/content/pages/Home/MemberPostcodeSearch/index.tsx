@@ -1,39 +1,16 @@
 import { Search, KeyboardReturn } from "@mui/icons-material";
 import { Box, Typography, InputAdornment } from "@mui/material";
-import { useState } from "react";
-import { useDispatch } from "src/store";
 import { StyledTextField } from "src/components/Shared/StyledTextField";
 import { fetchLocalMember } from "src/slices/member";
 import { PostcodeValidationSchema } from "../SearchValidation";
+import { useSearch } from "src/hooks/useSearch";
 
 function MemberPostcodeSearch() {
-  const dispatch = useDispatch();
-  const [query, setQuery] = useState<string | null>("");
-  const [returnPrompt, setReturnPrompt] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const handleChange = (e) => {
-    const value = e.target.value;
-    setQuery(value);
-    PostcodeValidationSchema()
-      .validate({ postcode: value })
-      .then(() => {
-        setError(null);
-        setReturnPrompt(true);
-      })
-      .catch((err) => {
-        setError(err.errors[0]);
-        setReturnPrompt(false);
-      });
-  };
-
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      const value = e.target.value;
-      dispatch(fetchLocalMember(value));
-      e.preventDefault();
-    }
-  };
+  const { query, returnPrompt, error, handleChange, handleKeyPress } =
+    useSearch({
+      fetchAction: fetchLocalMember,
+      validationSchema: PostcodeValidationSchema
+    });
 
   return (
     <Box px={"15px"}>
