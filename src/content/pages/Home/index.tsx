@@ -1,4 +1,4 @@
-import { Button, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { ReactNode, useEffect } from "react";
 import MemberNameSearch from "./MemberNameSearch";
 import MemberPostcodeSearch from "./MemberPostcodeSearch";
@@ -16,18 +16,8 @@ import { useNavigate } from "react-router";
 function Home() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  // welcome
-
-  // Find your local MP
-  // Enter postcode
-
-  // Find an MP
-
-  // MP List
   const members = useSelector(selectMembers);
   const fetchMembersStatus = useSelector(selectMembersStatus);
-
-  // const [localMp, setLocalMp] = useState<MpData>()
 
   useEffect(() => {
     dispatch(clearMembers());
@@ -58,9 +48,10 @@ function Home() {
   return (
     <>
       <Typography>Welcome to Votewatch</Typography>
-      {/* <MemberPostcodeSearch */}
-
+      <Box display="flex" flexDirection="row" alignItems="center">
+      <MemberPostcodeSearch />
       <MemberNameSearch />
+      </Box>
       {membersList}
     </>
   );

@@ -7,13 +7,13 @@ export interface Member {
   links: Link[];
 }
 
-export interface Link {
+interface Link {
   rel: string;
   href: string;
   method: string;
 }
 
-export interface Value {
+interface Value {
   id: number;
   nameListAs: string;
   nameDisplayAs: string;
@@ -25,7 +25,7 @@ export interface Value {
   thumbnailUrl: string;
 }
 
-export interface LatestHouseMembership {
+interface LatestHouseMembership {
   membershipFrom: string;
   membershipFromId: number;
   house: number;
@@ -37,7 +37,7 @@ export interface LatestHouseMembership {
   membershipStatus: MembershipStatus;
 }
 
-export interface MembershipStatus {
+interface MembershipStatus {
   statusIsActive: boolean;
   statusDescription: string;
   statusNotes: null;
@@ -46,7 +46,7 @@ export interface MembershipStatus {
   statusStartDate: Date;
 }
 
-export interface LatestParty {
+interface LatestParty {
   id: number;
   name: string;
   abbreviation: string;
@@ -59,17 +59,17 @@ export interface LatestParty {
 }
 
 export interface ContactInfo {
-  value: Value[];
-  links: Link[];
+  value: ContactValue[];
+  links: ContactLink[];
 }
 
-export interface Link {
+interface ContactLink {
   rel: string;
   href: string;
   method: string;
 }
 
-export interface Value {
+interface ContactValue {
   type: string;
   typeDescription: string;
   typeId: number;
@@ -85,4 +85,36 @@ export interface Value {
   phone: string;
   fax: string;
   email: string;
+}
+
+export interface TwfyMember {
+  member_id: string;
+  house: string;
+  constituency: string;
+  party: string;
+  entered_house: Date;
+  left_house: Date;
+  entered_reason: string;
+  left_reason: string;
+  person_id: string;
+  lastupdate: Date;
+  title: string;
+  given_name: string;
+  family_name: string;
+  full_name: string;
+  url: string;
+  image: string;
+  image_height: number;
+  image_width: number;
+  office: Office[];
+}
+
+interface Office {
+  moffice_id: string;
+  dept: string;
+  position: string;
+  from_date: Date;
+  to_date: Date;
+  person: string;
+  source: string;
 }
