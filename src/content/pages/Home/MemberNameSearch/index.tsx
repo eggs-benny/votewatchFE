@@ -1,9 +1,9 @@
-import { Search, KeyboardReturn } from "@mui/icons-material";
-import { Box, Typography, InputAdornment } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { StyledTextField } from "src/components/Shared/StyledTextField";
 import { fetchMembersList } from "src/slices/member";
 import { NameValidationSchema } from "../SearchValidation";
 import { useSearch } from "src/hooks/useSearch";
+import { SearchInputProps } from "../MemberPostcodeSearch";
 
 function MemberNameSearch() {
   const { query, returnPrompt, error, handleChange, handleKeyPress } =
@@ -28,21 +28,7 @@ function MemberNameSearch() {
           onKeyUp={handleKeyPress}
           error={!!error}
           helperText={error}
-          InputProps={{
-            sx: {
-              height: "40px"
-            },
-            startAdornment: (
-              <InputAdornment position="start">
-                {returnPrompt && <KeyboardReturn sx={{ color: "lightgray" }} />}
-              </InputAdornment>
-            ),
-            endAdornment: (
-              <InputAdornment position="end">
-                <Search sx={{ color: "lightgray" }} />
-              </InputAdornment>
-            )
-          }}
+          InputProps={SearchInputProps({ returnPrompt })}
         />
       </Box>
     </Box>

@@ -1,9 +1,31 @@
 import { Search, KeyboardReturn } from "@mui/icons-material";
-import { Box, Typography, InputAdornment } from "@mui/material";
+import { Box, Typography, InputAdornment, InputProps } from "@mui/material";
 import { StyledTextField } from "src/components/Shared/StyledTextField";
 import { fetchLocalMember } from "src/slices/member";
 import { PostcodeValidationSchema } from "../SearchValidation";
 import { useSearch } from "src/hooks/useSearch";
+
+interface InputPropsOptions {
+  returnPrompt: boolean;
+}
+
+export const SearchInputProps = ({ returnPrompt }: InputPropsOptions): InputProps => {
+  return {
+    sx: {
+      height: "40px"
+    },
+    startAdornment: (
+      <InputAdornment position="start">
+        {returnPrompt && <KeyboardReturn sx={{ color: "lightgray" }} />}
+      </InputAdornment>
+    ),
+    endAdornment: (
+      <InputAdornment position="end">
+        <Search sx={{ color: "lightgray" }} />
+      </InputAdornment>
+    )
+  };
+};
 
 function MemberPostcodeSearch() {
   const { query, returnPrompt, error, handleChange, handleKeyPress } =
@@ -28,21 +50,7 @@ function MemberPostcodeSearch() {
           onKeyUp={handleKeyPress}
           error={!!error}
           helperText={error}
-          InputProps={{
-            sx: {
-              height: "40px"
-            },
-            startAdornment: (
-              <InputAdornment position="start">
-                {returnPrompt && <KeyboardReturn sx={{ color: "lightgray" }} />}
-              </InputAdornment>
-            ),
-            endAdornment: (
-              <InputAdornment position="end">
-                <Search sx={{ color: "lightgray" }} />
-              </InputAdornment>
-            )
-          }}
+          InputProps={SearchInputProps({ returnPrompt })}
         />
       </Box>
     </Box>
