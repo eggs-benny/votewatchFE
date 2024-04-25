@@ -3,10 +3,6 @@ import type { RootState } from "src/store";
 import type { Member, MpData, TwfyMember } from "src/models/member";
 import { setAlertMessage } from "./alert";
 
-interface SignupState {
-  step: number;
-}
-
 export enum SliceStatusEnum {
   IDLE = "IDLE",
   LOADING = "LOADING",
@@ -19,7 +15,6 @@ interface MemberState {
   members: Member[];
   status: SliceStatusEnum;
   error: string;
-  signupState: SignupState;
 }
 
 const initialState: MemberState = {
@@ -27,9 +22,6 @@ const initialState: MemberState = {
   members: [],
   status: SliceStatusEnum.IDLE,
   error: null,
-  signupState: {
-    step: 0
-  }
 };
 
 const slice = createSlice({
@@ -40,7 +32,7 @@ const slice = createSlice({
       state.selectedMember = action.payload;
     },
     clearMembers: (state) => {
-      state.members = null;
+      state.members = [];
     }
   },
   extraReducers: (builder) => {

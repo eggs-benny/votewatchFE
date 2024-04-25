@@ -3,6 +3,7 @@ import { CircularProgress, Box } from "@mui/material";
 const LoadingSpinner = () => {
     return (
         <Box
+            data-testid="loading-spinner"
             sx={{
             position: 'fixed',
             left: 0,

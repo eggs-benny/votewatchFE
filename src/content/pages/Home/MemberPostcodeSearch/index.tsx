@@ -44,7 +44,7 @@ function MemberPostcodeSearch() {
           type="search"
           name="MP Name Search"
           value={query}
-          label="Find MP..."
+          label="Find Local MP..."
           placeholder="Hit enter to search"
           onChange={handleChange}
           onKeyUp={handleKeyPress}
