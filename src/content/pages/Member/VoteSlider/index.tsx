@@ -89,7 +89,7 @@ function VoteSlider({
                 Details of Commons Vote
               </Button>
               <Typography>Member Voted</Typography>
-              <Typography>{ayeNoe(vote.MemberVotedAye)}</Typography>
+              <Box>{ayeNoe(vote.MemberVotedAye)}</Box>
               <Typography>Result: {vote.PublishedDivision.AyeCount} Ayes, {vote.PublishedDivision.NoCount} Noes</Typography>
               <Button
                 onClick={() =>

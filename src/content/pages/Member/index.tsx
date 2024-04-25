@@ -48,20 +48,20 @@ function Member() {
 
   return (
     <>
-     <Box display="flex" flexDirection="column" alignItems="center">
-      <Typography>Your MP</Typography>
-      <Typography>{member.value?.nameFullTitle}</Typography>
-      <img
-        src={member.value.thumbnailUrl}
-        style={{
-          width: 225,
-          height: 225,
-          border: "7px solid black",
-          borderRadius: 150
-        }}
-        alt={member.value.nameFullTitle}
-      />
-            </Box>
+      <Box display="flex" flexDirection="column" alignItems="center">
+        <Typography>Your MP</Typography>
+        <Typography>{member.value?.nameFullTitle}</Typography>
+        <img
+          src={member.value.thumbnailUrl}
+          style={{
+            width: 225,
+            height: 225,
+            border: "7px solid black",
+            borderRadius: 150
+          }}
+          alt={member.value.nameFullTitle}
+        />
+      </Box>
       <VoteSlider
         votes={votes}
         contactInfo={contactInfo}

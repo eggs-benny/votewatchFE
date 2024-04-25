@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { debounce } from "@mui/material";
+import { useMemo, useState } from "react";
 import { useDispatch } from "src/store";
 
 interface SearchHookOptions {
@@ -15,26 +16,29 @@ export const useSearch = ({
   const [returnPrompt, setReturnPrompt] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleChange = (e) => {
-    const value = e.target.value;
-    setQuery(value);
+  const validateInput = useMemo(() => debounce((value) => {
     validationSchema()
-      .validate({ value })
+      .validate({ postcode: value })
       .then(() => {
         setError(null);
         setReturnPrompt(true);
       })
-      .catch((err: { errors: string[] }) => {
-        setError(err.errors[0]);
+      .catch((err) => {
+        setError(err.errors ? err.errors[0] : "Invalid input");
         setReturnPrompt(false);
       });
+  }, 200), [validationSchema]);
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setQuery(value);
+    validateInput(value);
   };
 
   const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      const value = e.target.value;
-      dispatch(fetchAction(value));
+    if (e.key === "Enter" && query) {
       e.preventDefault();
+      dispatch(fetchAction(query));
     }
   };
 
