@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Divider, Typography } from "@mui/material";
 import Slider from "react-slick";
 import { Division } from "src/models/division";
 import { ContactInfo } from "src/models/member";
@@ -49,9 +49,10 @@ function VoteSlider({ sliderRef, currentSlide }: VoteSliderProps) {
       />
     );
   }
-  
+
   function houseVote(vote: Division) {
-    const isAyeMajority = vote.PublishedDivision.AyeCount > vote.PublishedDivision.NoCount;
+    const isAyeMajority =
+      vote.PublishedDivision.AyeCount > vote.PublishedDivision.NoCount;
     return (
       <ResultTypography
         voteResult={isAyeMajority ? "AYE" : "NO"}
@@ -96,16 +97,21 @@ function VoteSlider({ sliderRef, currentSlide }: VoteSliderProps) {
                   flexDirection="column"
                   alignItems="center"
                 >
-                  <Typography>Member Voted</Typography>
+                  <Typography fontFamily={"Roboto Slab"}>
+                    Member Voted:
+                  </Typography>
                   <Box>{memberVote(vote.MemberVotedAye)}</Box>
                 </Box>
+                <Divider orientation="vertical" variant="middle" flexItem />
                 <Box
                   px="25px"
                   display="flex"
                   flexDirection="column"
                   alignItems="center"
                 >
-                  <Typography>House Voted</Typography>
+                  <Typography fontFamily={"Roboto Slab"}>
+                    House Voted:
+                  </Typography>
                   <Box>{houseVote(vote)}</Box>
                 </Box>
               </Box>

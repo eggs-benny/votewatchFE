@@ -13,7 +13,7 @@ import VoteSlider from "./VoteSlider";
 import { useDispatch, useSelector } from "src/store";
 import { fetchMemberVotes, selectVotesStatus } from "src/slices/vote";
 import LoadingSpinner from "src/components/Shared/LoadingSpinner";
-import { ArrowCircleLeft, ArrowCircleRight } from "@mui/icons-material";
+import { ArrowCircleLeft, ArrowCircleRight, Home } from "@mui/icons-material";
 
 function Member() {
   const navigate = useNavigate();
@@ -89,7 +89,14 @@ function Member() {
             </ArrowCircleRight>
           )}
         </Box>
-        <Button onClick={() => navigate("/home")}>Home</Button>
+        <Home
+          onClick={() => navigate("/home")}
+          cursor="pointer"
+          fontSize="large"
+          sx={{ color: "#012e31" }}
+        >
+          Home
+        </Home>
       </Box>
     </Box>
   );
