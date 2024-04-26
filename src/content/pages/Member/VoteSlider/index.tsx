@@ -1,5 +1,6 @@
 import { Box, Button, Typography } from "@mui/material";
 import Slider from "react-slick";
+import { Division } from "src/models/division";
 import { ContactInfo } from "src/models/member";
 import {
   selectMemberContactInfo,
@@ -7,6 +8,7 @@ import {
 } from "src/slices/member";
 import { selectVotes } from "src/slices/vote";
 import { useSelector } from "src/store";
+import ResultTypography from "./ResultTypography";
 
 interface VoteSliderProps {
   sliderRef: Slider;
@@ -17,7 +19,7 @@ function VoteSlider({ sliderRef, currentSlide }: VoteSliderProps) {
   const divisionDate = (date: Date) => new Date(date).toLocaleDateString();
   const member = useSelector(selectSelectedMember);
   const contactInfo = useSelector(selectMemberContactInfo);
-  const votes = useSelector(selectVotes)
+  const votes = useSelector(selectVotes);
 
   const sliderSettings = {
     dots: false,
@@ -39,34 +41,23 @@ function VoteSlider({ sliderRef, currentSlide }: VoteSliderProps) {
   }
   const memberEmail = findMemberEmail(contactInfo);
 
-  function ayeNoe(mpVote: boolean) {
-    if (mpVote) {
-      return (
-        <Typography
-          style={{
-            fontSize: 60,
-            color: "forestgreen",
-            fontWeight: "900",
-            alignItems: "center"
-          }}
-        >
-          {`\n`}AYE
-        </Typography>
-      );
-    } else if (!mpVote) {
-      return (
-        <Typography
-          style={{
-            fontSize: 60,
-            color: "firebrick",
-            fontWeight: "900",
-            alignItems: "center"
-          }}
-        >
-          {`\n`}NO
-        </Typography>
-      );
-    }
+  function memberVote(mpVote: boolean) {
+    return (
+      <ResultTypography
+        voteResult={mpVote ? "AYE" : "NO"}
+        color={mpVote ? "forestgreen" : "firebrick"}
+      />
+    );
+  }
+  
+  function houseVote(vote: Division) {
+    const isAyeMajority = vote.PublishedDivision.AyeCount > vote.PublishedDivision.NoCount;
+    return (
+      <ResultTypography
+        voteResult={isAyeMajority ? "AYE" : "NO"}
+        color={isAyeMajority ? "forestgreen" : "firebrick"}
+      />
+    );
   }
 
   return (
@@ -97,9 +88,27 @@ function VoteSlider({ sliderRef, currentSlide }: VoteSliderProps) {
                 title={`${vote.PublishedDivision.Title}`}
               >
                 Details of Commons Vote
-              </Button>
-              <Typography>Member Voted</Typography>
-              <Box>{ayeNoe(vote.MemberVotedAye)}</Box>
+              </Button>{" "}
+              <Box display="flex" flexDirection="row" alignItems="center">
+                <Box
+                  px="25px"
+                  display="flex"
+                  flexDirection="column"
+                  alignItems="center"
+                >
+                  <Typography>Member Voted</Typography>
+                  <Box>{memberVote(vote.MemberVotedAye)}</Box>
+                </Box>
+                <Box
+                  px="25px"
+                  display="flex"
+                  flexDirection="column"
+                  alignItems="center"
+                >
+                  <Typography>House Voted</Typography>
+                  <Box>{houseVote(vote)}</Box>
+                </Box>
+              </Box>
               <Typography>
                 Result: {vote.PublishedDivision.AyeCount} Ayes,{" "}
                 {vote.PublishedDivision.NoCount} Noes
@@ -116,7 +125,7 @@ function VoteSlider({ sliderRef, currentSlide }: VoteSliderProps) {
               >
                 Email your MP about this
               </Button>
-              <Typography> Approve / Disapprove</Typography>
+              {/* <Typography> Approve / Disapprove</Typography> */}
             </Box>
           </div>
         ))}

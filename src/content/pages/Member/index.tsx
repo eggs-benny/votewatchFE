@@ -13,6 +13,7 @@ import VoteSlider from "./VoteSlider";
 import { useDispatch, useSelector } from "src/store";
 import { fetchMemberVotes, selectVotesStatus } from "src/slices/vote";
 import LoadingSpinner from "src/components/Shared/LoadingSpinner";
+import { ArrowCircleLeft, ArrowCircleRight } from "@mui/icons-material";
 
 function Member() {
   const navigate = useNavigate();
@@ -47,8 +48,10 @@ function Member() {
   }
 
   return (
-    <>
-      <Box display="flex" flexDirection="column" alignItems="center">
+    <Box
+      sx={{ width: "100vw", minHeight: "100vh", backgroundColor: "#fffdeb" }}
+    >
+      <Box display="flex" flexDirection="column" alignItems="center" py="50px">
         <Typography>Your MP</Typography>
         <Typography>{member.value?.nameFullTitle}</Typography>
         <img
@@ -56,7 +59,7 @@ function Member() {
           style={{
             width: 225,
             height: 225,
-            border: "7px solid black",
+            border: "7px solid #012e31",
             borderRadius: 150
           }}
           alt={member.value.nameFullTitle}
@@ -66,15 +69,29 @@ function Member() {
       <Box display="flex" flexDirection="column" alignItems="center">
         <Box>
           {currentSlide > 0 && (
-            <Button onClick={() => handleSlideChange(-1)}>Previous</Button>
+            <ArrowCircleLeft
+              onClick={() => handleSlideChange(-1)}
+              cursor="pointer"
+              fontSize="large"
+              sx={{ color: "#012e31" }}
+            >
+              Previous
+            </ArrowCircleLeft>
           )}
           {currentSlide < 9 && (
-            <Button onClick={() => handleSlideChange(1)}>Next</Button>
+            <ArrowCircleRight
+              onClick={() => handleSlideChange(1)}
+              cursor="pointer"
+              fontSize="large"
+              sx={{ color: "#012e31" }}
+            >
+              Previous
+            </ArrowCircleRight>
           )}
         </Box>
         <Button onClick={() => navigate("/home")}>Home</Button>
       </Box>
-    </>
+    </Box>
   );
 }
 export default Member;

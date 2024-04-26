@@ -46,8 +46,17 @@ function Home() {
   }
 
   return (
-    <>
-      <Box sx={{ width: "100vw", m: 0, p: 0, overflow: "hidden", backgroundColor: "#012e31", py: "50px" }}>
+    <Box
+      sx={{ width: "100vw", minHeight: "100vh", backgroundColor: "#fffdeb" }}
+    >
+      <Box
+        sx={{
+          width: "100vw",
+          overflow: "hidden",
+          backgroundColor: "#012e31",
+          py: "50px"
+        }}
+      >
         <img
           src="/owl-logo.png"
           style={{
@@ -61,7 +70,12 @@ function Home() {
           alt={"Votewatch Owl Logo"}
         />
       </Box>
-      <Box display="flex" flexDirection="column" alignItems="center" py="50px">
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        sx={{ py: "50px", color: "#012e31" }}
+      >
         <Typography fontSize={40} fontFamily={"Roboto Slab"}>
           Welcome to Votewatch
         </Typography>
@@ -71,7 +85,7 @@ function Home() {
         </Box>
         {membersList}
       </Box>
-    </>
+    </Box>
   );
 }
 
