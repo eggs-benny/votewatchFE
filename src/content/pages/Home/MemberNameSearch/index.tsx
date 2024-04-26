@@ -15,15 +15,15 @@ function MemberNameSearch() {
   return (
     <Box px={"15px"}>
       <Box py={"5px"}>
-        <Typography>Find an MP by name:</Typography>
+        <Typography fontFamily={"Roboto Slab"} fontSize={20}>Find an MP by name:</Typography>
       </Box>
       <Box py={"5px"}>
         <StyledTextField
           type="search"
           name="MP Name Search"
           value={query}
-          label="Find MP..."
-          placeholder="Hit enter to search"
+          label="Enter a name..."
+          placeholder="Hit return to search"
           onChange={handleChange}
           onKeyUp={handleKeyPress}
           error={!!error}

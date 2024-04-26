@@ -37,15 +37,15 @@ function MemberPostcodeSearch() {
   return (
     <Box px={"15px"}>
       <Box py={"5px"}>
-        <Typography>Enter your postcode to find your local MP:</Typography>
+        <Typography fontFamily={"Roboto Slab"} fontSize={20}>Find your local MP:</Typography>
       </Box>
       <Box py={"5px"}>
         <StyledTextField
           type="search"
           name="MP Name Search"
           value={query}
-          label="Find Local MP..."
-          placeholder="Hit enter to search"
+          label="Enter your postcode..."
+          placeholder="Hit return to search"
           onChange={handleChange}
           onKeyUp={handleKeyPress}
           error={!!error}

@@ -47,12 +47,30 @@ function Home() {
 
   return (
     <>
-      <Typography>Welcome to Votewatch</Typography>
-      <Box display="flex" flexDirection="row" alignItems="center">
-      <MemberPostcodeSearch />
-      <MemberNameSearch />
+      <Box sx={{ width: "100vw", m: 0, p: 0, overflow: "hidden", backgroundColor: "#012e31", py: "50px" }}>
+        <img
+          src="/owl-logo.png"
+          style={{
+            width: 250,
+            height: 250,
+            borderRadius: 25,
+            position: "relative",
+            left: "50%",
+            transform: "translateX(-50%)"
+          }}
+          alt={"Votewatch Owl Logo"}
+        />
       </Box>
-      {membersList}
+      <Box display="flex" flexDirection="column" alignItems="center" py="50px">
+        <Typography fontSize={40} fontFamily={"Roboto Slab"}>
+          Welcome to Votewatch
+        </Typography>
+        <Box display="flex" flexDirection="row" alignItems="center">
+          <MemberPostcodeSearch />
+          <MemberNameSearch />
+        </Box>
+        {membersList}
+      </Box>
     </>
   );
 }
