@@ -1,43 +1,31 @@
 import { Box, Button, Typography } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
-import { Division } from "src/models/division";
-import { selectSelectedMember } from "src/slices/member";
+import { ReactNode, useEffect, useRef, useState } from "react";
+import {
+  fetchMemberContactInfo,
+  selectSelectedMember,
+  SliceStatusEnum
+} from "src/slices/member";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { ContactInfo } from "src/models/member";
 import { useNavigate } from "react-router";
 import VoteSlider from "./VoteSlider";
+import { useDispatch, useSelector } from "src/store";
+import { fetchMemberVotes, selectVotesStatus } from "src/slices/vote";
+import LoadingSpinner from "src/components/Shared/LoadingSpinner";
 
 function Member() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const member = useSelector(selectSelectedMember);
-  const [votes, setVotes] = useState<Division[]>();
-  const [contactInfo, setContactInfo] = useState<ContactInfo>();
   const [currentSlide, setCurrentSlide] = useState<number>(0);
   const sliderRef = useRef<Slider>(null);
-
-  const fetchMemberVotes = async (memberId: number) => {
-    const response = await fetch(
-      `https://commonsvotes-api.parliament.uk/data/divisions.json/membervoting?queryParameters.memberId=${memberId}`
-    );
-    const voteData: Division[] = await response.json();
-    setVotes(voteData);
-  };
-
-  const fetchMemberContactDetails = async (memberId: number) => {
-    const response = await fetch(
-      `https://members-api.parliament.uk/api/Members/${memberId}/Contact`
-    );
-    const contactData: ContactInfo = await response.json();
-    setContactInfo(contactData);
-  };
+  const votesStatus = useSelector(selectVotesStatus);
 
   useEffect(() => {
-    fetchMemberVotes(member.value.id);
-    fetchMemberContactDetails(member.value.id);
-  }, [member.value.id]);
+    dispatch(fetchMemberVotes(member.value.id));
+    dispatch(fetchMemberContactInfo(member.value.id));
+  }, [dispatch, member.value.id]);
 
   const handleSlideChange = (direction: number) => {
     setCurrentSlide(currentSlide + direction);
@@ -45,6 +33,18 @@ function Member() {
       sliderRef.current.slickGoTo(currentSlide + direction);
     }
   };
+
+  let votesList: ReactNode;
+  switch (votesStatus) {
+    case SliceStatusEnum.SUCCEEDED:
+      votesList = (
+        <VoteSlider sliderRef={sliderRef} currentSlide={currentSlide} />
+      );
+      break;
+    case SliceStatusEnum.LOADING:
+      votesList = <LoadingSpinner />;
+      break;
+  }
 
   return (
     <>
@@ -62,12 +62,7 @@ function Member() {
           alt={member.value.nameFullTitle}
         />
       </Box>
-      <VoteSlider
-        votes={votes}
-        contactInfo={contactInfo}
-        sliderRef={sliderRef}
-        currentSlide={currentSlide}
-      />
+      {votesList}
       <Box display="flex" flexDirection="column" alignItems="center">
         <Box>
           {currentSlide > 0 && (

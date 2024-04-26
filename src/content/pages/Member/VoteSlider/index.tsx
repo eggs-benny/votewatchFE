@@ -1,25 +1,24 @@
 import { Box, Button, Typography } from "@mui/material";
 import Slider from "react-slick";
-import { Division } from "src/models/division";
 import { ContactInfo } from "src/models/member";
-import { selectSelectedMember } from "src/slices/member";
+import {
+  selectMemberContactInfo,
+  selectSelectedMember
+} from "src/slices/member";
+import { selectVotes } from "src/slices/vote";
 import { useSelector } from "src/store";
 
 interface VoteSliderProps {
-  votes: Division[];
-  contactInfo: ContactInfo;
   sliderRef: Slider;
   currentSlide: number;
 }
 
-function VoteSlider({
-  votes,
-  contactInfo,
-  sliderRef,
-  currentSlide
-}: VoteSliderProps) {
+function VoteSlider({ sliderRef, currentSlide }: VoteSliderProps) {
   const divisionDate = (date: Date) => new Date(date).toLocaleDateString();
   const member = useSelector(selectSelectedMember);
+  const contactInfo = useSelector(selectMemberContactInfo);
+  const votes = useSelector(selectVotes)
+
   const sliderSettings = {
     dots: false,
     infinite: false,
@@ -28,6 +27,17 @@ function VoteSlider({
     slidesToScroll: 1,
     autoplay: false
   };
+
+  function findMemberEmail(contactInfo: ContactInfo) {
+    if (contactInfo?.value[0]?.email !== undefined) {
+      return contactInfo.value[0].email;
+    }
+    if (contactInfo?.value[1]?.email !== undefined) {
+      return contactInfo.value[1].email;
+    }
+    return new Error("Can't find MP's Email");
+  }
+  const memberEmail = findMemberEmail(contactInfo);
 
   function ayeNoe(mpVote: boolean) {
     if (mpVote) {
@@ -65,7 +75,7 @@ function VoteSlider({
         <Typography>Recent Commons Votes</Typography>
       </Box>
       <Slider {...sliderSettings} ref={sliderRef}>
-        {votes?.slice(0, 10).map((vote, index) => (
+        {votes?.map((vote, index) => (
           <div
             key={vote.PublishedDivision.DivisionId}
             style={{ display: currentSlide === index ? "block" : "none" }}
@@ -90,11 +100,14 @@ function VoteSlider({
               </Button>
               <Typography>Member Voted</Typography>
               <Box>{ayeNoe(vote.MemberVotedAye)}</Box>
-              <Typography>Result: {vote.PublishedDivision.AyeCount} Ayes, {vote.PublishedDivision.NoCount} Noes</Typography>
+              <Typography>
+                Result: {vote.PublishedDivision.AyeCount} Ayes,{" "}
+                {vote.PublishedDivision.NoCount} Noes
+              </Typography>
               <Button
                 onClick={() =>
                   window.open(
-                    `mailto:${contactInfo.value[0].email}?subject=${vote.PublishedDivision.Title}&body=Dear ${member.value.nameAddressAs},\n\n I am writing to you regarding your vote on the recent division titled: "${vote.PublishedDivision.Title}". \n\nIt has come to my attention that you voted ${
+                    `mailto:${memberEmail}?subject=${vote.PublishedDivision.Title}&body=Dear ${member.value.nameAddressAs},\n\n I am writing to you regarding your vote on the recent division titled: "${vote.PublishedDivision.Title}". \n\nIt has come to my attention that you voted ${
                       true ? "Aye" : "Noe"
                     } for this Division. \n\n I would therefore share my [SUPPORT / CONCERN] because [ENTER REASON]. \n\n Yours Sincerely,\n\n [ENTER NAME]`
                   )
