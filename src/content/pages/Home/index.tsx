@@ -12,6 +12,7 @@ import {
 } from "src/slices/member";
 import LoadingSpinner from "src/components/Shared/LoadingSpinner";
 import { useNavigate } from "react-router";
+import AudioPlayer from "src/components/Shared/AudioPlayer";
 
 function Home() {
   const navigate = useNavigate();
@@ -82,6 +83,7 @@ function Home() {
         <Box display="flex" flexDirection="row" alignItems="center">
           <MemberPostcodeSearch />
           <MemberNameSearch />
+          <AudioPlayer />
         </Box>
         {membersList}
       </Box>
