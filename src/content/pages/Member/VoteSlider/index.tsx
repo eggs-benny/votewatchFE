@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Typography } from "@mui/material";
+import { Box, Button, Divider, Tooltip, Typography } from "@mui/material";
 import Slider from "react-slick";
 import { Division } from "src/models/division";
 import { ContactInfo } from "src/models/member";
@@ -64,8 +64,11 @@ function VoteSlider({ sliderRef, currentSlide }: VoteSliderProps) {
   return (
     <>
       <Box display="flex" flexDirection="column" alignItems="center">
-        <Typography>Recent Commons Votes</Typography>
+        <Typography fontSize={25} fontFamily={"Roboto Slab"}>
+          Recent Commons Votes
+        </Typography>
       </Box>
+      <Divider variant="middle"/>
       <Slider {...sliderSettings} ref={sliderRef}>
         {votes?.map((vote, index) => (
           <div
@@ -73,12 +76,24 @@ function VoteSlider({ sliderRef, currentSlide }: VoteSliderProps) {
             style={{ display: currentSlide === index ? "block" : "none" }}
           >
             <Box display="flex" flexDirection="column" alignItems="center">
-              <Typography>
+              <Typography fontSize={15} fontFamily={"Roboto Slab"}>
                 {divisionDate(vote.PublishedDivision.Date)}
               </Typography>
-              <Typography className="text-3xl font-bold underline">
-                {vote.PublishedDivision.Title}
-              </Typography>
+              <Tooltip className="" title={vote.PublishedDivision.Title}>
+                <Typography
+                  sx={{
+                    fontSize: "20px",
+                    fontFamily: "Roboto Slab",
+                    maxWidth: "500px",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap"
+                  }}
+                  className="text-3xl font-bold underline"
+                >
+                  {vote.PublishedDivision.Title}
+                </Typography>
+              </Tooltip>
               <Button
                 onClick={() =>
                   window.open(
@@ -115,8 +130,8 @@ function VoteSlider({ sliderRef, currentSlide }: VoteSliderProps) {
                   <Box>{houseVote(vote)}</Box>
                 </Box>
               </Box>
-              <Typography>
-                Result: {vote.PublishedDivision.AyeCount} Ayes,{" "}
+              <Typography fontFamily={"Roboto Slab"}>
+                Commons result: {vote.PublishedDivision.AyeCount} Ayes,{" "}
                 {vote.PublishedDivision.NoCount} Noes
               </Typography>
               <Button

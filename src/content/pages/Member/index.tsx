@@ -1,4 +1,9 @@
-import { Box, Button, Typography } from "@mui/material";
+import {
+  Box,
+  Pagination,
+  PaginationItem,
+  Typography
+} from "@mui/material";
 import { ReactNode, useEffect, useRef, useState } from "react";
 import {
   fetchMemberContactInfo,
@@ -11,7 +16,11 @@ import "slick-carousel/slick/slick-theme.css";
 import { useNavigate } from "react-router";
 import VoteSlider from "./VoteSlider";
 import { useDispatch, useSelector } from "src/store";
-import { fetchMemberVotes, selectVotesStatus } from "src/slices/vote";
+import {
+  fetchMemberVotes,
+  selectVotes,
+  selectVotesStatus
+} from "src/slices/vote";
 import LoadingSpinner from "src/components/Shared/LoadingSpinner";
 import { ArrowCircleLeft, ArrowCircleRight, Home } from "@mui/icons-material";
 
@@ -22,16 +31,17 @@ function Member() {
   const [currentSlide, setCurrentSlide] = useState<number>(0);
   const sliderRef = useRef<Slider>(null);
   const votesStatus = useSelector(selectVotesStatus);
+  const votes = useSelector(selectVotes);
 
   useEffect(() => {
     dispatch(fetchMemberVotes(member.value.id));
     dispatch(fetchMemberContactInfo(member.value.id));
   }, [dispatch, member.value.id]);
 
-  const handleSlideChange = (direction: number) => {
-    setCurrentSlide(currentSlide + direction);
+  const handleChange = (event, value) => {
+    setCurrentSlide(value - 1);
     if (sliderRef.current) {
-      sliderRef.current.slickGoTo(currentSlide + direction);
+      sliderRef.current.slickGoTo(value - 1);
     }
   };
 
@@ -51,9 +61,31 @@ function Member() {
     <Box
       sx={{ width: "100vw", minHeight: "100vh", backgroundColor: "#fffdeb" }}
     >
+      <Box
+        sx={{
+          width: "100vw",
+          overflow: "hidden",
+          backgroundColor: "#012e31",
+          py: "20px"
+        }}
+      >
+        <img
+          src="/owl-logo.png"
+          style={{
+            width: 120,
+            height: 120,
+            borderRadius: 25,
+            position: "relative",
+            left: "50%",
+            transform: "translateX(-50%)"
+          }}
+          alt={"Votewatch Owl Logo"}
+        />
+      </Box>
       <Box display="flex" flexDirection="column" alignItems="center" py="50px">
-        <Typography>Your MP</Typography>
-        <Typography>{member.value?.nameFullTitle}</Typography>
+        <Typography fontSize={40} fontFamily={"Roboto Slab"}>
+          {member.value?.nameFullTitle}
+        </Typography>
         <img
           src={member.value.thumbnailUrl}
           style={{
@@ -67,29 +99,19 @@ function Member() {
       </Box>
       {votesList}
       <Box display="flex" flexDirection="column" alignItems="center">
-        <Box>
-          {currentSlide > 0 && (
-            <ArrowCircleLeft
-              onClick={() => handleSlideChange(-1)}
-              cursor="pointer"
-              fontSize="large"
-              sx={{ color: "#012e31" }}
-            >
-              Previous
-            </ArrowCircleLeft>
+        <Pagination
+          count={votes.length}
+          page={currentSlide + 1}
+          onChange={handleChange}
+          renderItem={(item) => (
+            <PaginationItem
+              slots={{ previous: ArrowCircleLeft, next: ArrowCircleRight }}
+              {...item}
+            />
           )}
-          {currentSlide < 9 && (
-            <ArrowCircleRight
-              onClick={() => handleSlideChange(1)}
-              cursor="pointer"
-              fontSize="large"
-              sx={{ color: "#012e31" }}
-            >
-              Previous
-            </ArrowCircleRight>
-          )}
-        </Box>
+        />
         <Home
+          aria-label="home"
           onClick={() => navigate("/home")}
           cursor="pointer"
           fontSize="large"
