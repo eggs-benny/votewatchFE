@@ -1,5 +1,5 @@
 import { Box, Button, Typography } from "@mui/material";
-import { ReactNode, useEffect } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import MemberNameSearch from "./MemberNameSearch";
 import MemberPostcodeSearch from "./MemberPostcodeSearch";
 import { useDispatch, useSelector } from "src/store";
@@ -18,12 +18,14 @@ function Home() {
   const dispatch = useDispatch();
   const members = useSelector(selectMembers);
   const fetchMembersStatus = useSelector(selectMembersStatus);
+  const [isPostcodeSearch, setIsPostcodeSearch] = useState<boolean>(null);
 
   useEffect(() => {
     dispatch(clearMembers());
   }, [dispatch]);
 
   let membersList: ReactNode;
+  let heading: ReactNode = null;
   switch (fetchMembersStatus) {
     case SliceStatusEnum.SUCCEEDED:
       membersList = members?.map((member) => {
@@ -39,6 +41,13 @@ function Home() {
           </Button>
         );
       });
+      if (isPostcodeSearch !== null) {
+        heading = (
+          <Typography fontSize={20} fontFamily={"Roboto Slab"}>
+            {isPostcodeSearch ? "Your local MP is:" : "Search results:"}
+          </Typography>
+        );
+      }
       break;
     case SliceStatusEnum.LOADING:
       membersList = <LoadingSpinner />;
@@ -80,9 +89,10 @@ function Home() {
           Welcome to Votewatch
         </Typography>
         <Box display="flex" flexDirection="row" alignItems="center">
-          <MemberPostcodeSearch />
-          <MemberNameSearch />
+          <MemberPostcodeSearch onSearch={() => setIsPostcodeSearch(true)} />
+          <MemberNameSearch onSearch={() => setIsPostcodeSearch(false)} />
         </Box>
+        {heading}
         {membersList}
       </Box>
     </Box>

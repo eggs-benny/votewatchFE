@@ -27,19 +27,20 @@ export const SearchInputProps = ({ returnPrompt }: InputPropsOptions): InputProp
   };
 };
 
-function MemberPostcodeSearch() {
-  const { query, returnPrompt, error, handleChange, handleKeyPress } =
-    useSearch({
-      fetchAction: fetchLocalMember,
-      validationSchema: PostcodeValidationSchema
-    });
+function MemberPostcodeSearch({onSearch}) {
+  const { query, returnPrompt, error, handleChange, handleKeyPress } = useSearch({
+    fetchAction: fetchLocalMember,
+    validationSchema: PostcodeValidationSchema,
+    onSearch,
+    validationKey: 'postcode'
+  });
 
   return (
     <Box px={"15px"}>
       <Box py={"5px"}>
         <Typography fontFamily={"Roboto Slab"} fontSize={20}>Find your local MP:</Typography>
       </Box>
-      <Box py={"5px"}>
+      <Box py={"10px"}>
         <StyledTextField
           type="search"
           name="MP Name Search"

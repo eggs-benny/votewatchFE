@@ -10,8 +10,8 @@ export const PostcodeValidationSchema = () =>
       .required("Postcode is required")
   });
 
-export const NameValidationSchema = () =>
-  Yup.object().shape({
-    mpName: Yup.string()
-      .min(3, "Minimum term 3 chars")
-  });
+  export const NameValidationSchema = () => Yup.object().shape({
+    memberName: Yup.string()
+      .min(3, "Minimum 3 characters required")
+      .required("Name is required")
+});

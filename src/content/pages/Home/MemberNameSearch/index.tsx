@@ -5,19 +5,20 @@ import { NameValidationSchema } from "../SearchValidation";
 import { useSearch } from "src/hooks/useSearch";
 import { SearchInputProps } from "../MemberPostcodeSearch";
 
-function MemberNameSearch() {
-  const { query, returnPrompt, error, handleChange, handleKeyPress } =
-    useSearch({
-      fetchAction: fetchMembersList,
-      validationSchema: NameValidationSchema
-    });
+function MemberNameSearch({onSearch}) {
+  const { query, returnPrompt, error, handleChange, handleKeyPress } = useSearch({
+    fetchAction: fetchMembersList,
+    validationSchema: NameValidationSchema,
+    onSearch,
+    validationKey: 'memberName'
+  });
 
   return (
     <Box px={"15px"}>
       <Box py={"5px"}>
         <Typography fontFamily={"Roboto Slab"} fontSize={20}>Find an MP by name:</Typography>
       </Box>
-      <Box py={"5px"}>
+      <Box py={"10px"}>
         <StyledTextField
           type="search"
           name="MP Name Search"

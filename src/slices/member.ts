@@ -79,13 +79,13 @@ const slice = createSlice({
   }
 });
 
-// fetch members from name search
+// fetch current members from name search
 export const fetchMembersList = createAsyncThunk<Member[], string>(
   "members/nameFetch",
   async (mpNameQuery, thunkAPI) => {
     try {
       const response = await fetch(
-        `https://members-api.parliament.uk/api/Members/Search?Name=${mpNameQuery}`
+        `https://members-api.parliament.uk/api/Members/Search?Name=${mpNameQuery}&IsCurrentMember=true`
       );
       const mpData: MpData = await response.json();
       const members = mpData.items;
