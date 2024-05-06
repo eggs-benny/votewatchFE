@@ -82,7 +82,7 @@ function Member() {
           alt={"Votewatch Owl Logo"}
         />
       </Box>
-      <Box display="flex" flexDirection="column" alignItems="center" py="50px">
+      <Box display="flex" flexDirection="column" alignItems="center" py="10px">
         <Typography fontSize={40} fontFamily={"Roboto Slab"}>
           {member.value?.nameFullTitle}
         </Typography>
@@ -97,8 +97,10 @@ function Member() {
           alt={member.value.nameFullTitle}
         />
       </Box>
-      {votesList}
-      <Box display="flex" flexDirection="column" alignItems="center">
+      <Box display="flex" flexDirection="column" alignItems="center" py="20px">
+        <Typography fontSize={25} fontFamily={"Roboto Slab"}>
+          Recent Commons Votes
+        </Typography>
         <Pagination
           count={votes.length}
           page={currentSlide + 1}
@@ -110,6 +112,9 @@ function Member() {
             />
           )}
         />
+      </Box>
+      {votesList}
+      <Box display="flex" flexDirection="column" alignItems="center">
         <Home
           aria-label="home"
           onClick={() => navigate("/home")}

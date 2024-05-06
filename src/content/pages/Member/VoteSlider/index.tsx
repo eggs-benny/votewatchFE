@@ -1,14 +1,11 @@
 import { Box, Button, Divider, Tooltip, Typography } from "@mui/material";
 import Slider from "react-slick";
 import { Division } from "src/models/division";
-import { ContactInfo } from "src/models/member";
-import {
-  selectMemberContactInfo,
-  selectSelectedMember
-} from "src/slices/member";
 import { selectVotes } from "src/slices/vote";
 import { useSelector } from "src/store";
 import ResultTypography from "./ResultTypography";
+import { useState } from "react";
+import EmailModal from "src/components/Shared/EmailModal";
 
 interface VoteSliderProps {
   sliderRef: Slider;
@@ -17,9 +14,9 @@ interface VoteSliderProps {
 
 function VoteSlider({ sliderRef, currentSlide }: VoteSliderProps) {
   const divisionDate = (date: Date) => new Date(date).toLocaleDateString();
-  const member = useSelector(selectSelectedMember);
-  const contactInfo = useSelector(selectMemberContactInfo);
   const votes = useSelector(selectVotes);
+  const [selectedVote, setSelectedVote] = useState<Division>();
+  const [openEmailModal, setOpenEmailModal] = useState<boolean>(false);
 
   const sliderSettings = {
     dots: false,
@@ -29,17 +26,6 @@ function VoteSlider({ sliderRef, currentSlide }: VoteSliderProps) {
     slidesToScroll: 1,
     autoplay: false
   };
-
-  function findMemberEmail(contactInfo: ContactInfo) {
-    if (contactInfo?.value[0]?.email !== undefined) {
-      return contactInfo.value[0].email;
-    }
-    if (contactInfo?.value[1]?.email !== undefined) {
-      return contactInfo.value[1].email;
-    }
-    return new Error("Can't find MP's Email");
-  }
-  const memberEmail = findMemberEmail(contactInfo);
 
   function memberVote(mpVote: boolean) {
     return (
@@ -61,14 +47,13 @@ function VoteSlider({ sliderRef, currentSlide }: VoteSliderProps) {
     );
   }
 
+  function handleClick(vote: Division) {
+    setSelectedVote(vote);
+    setOpenEmailModal(true);
+  }
+
   return (
     <>
-      <Box display="flex" flexDirection="column" alignItems="center">
-        <Typography fontSize={25} fontFamily={"Roboto Slab"}>
-          Recent Commons Votes
-        </Typography>
-      </Box>
-      <Divider variant="middle"/>
       <Slider {...sliderSettings} ref={sliderRef}>
         {votes?.map((vote, index) => (
           <div
@@ -134,23 +119,20 @@ function VoteSlider({ sliderRef, currentSlide }: VoteSliderProps) {
                 Commons result: {vote.PublishedDivision.AyeCount} Ayes,{" "}
                 {vote.PublishedDivision.NoCount} Noes
               </Typography>
-              <Button
-                onClick={() =>
-                  window.open(
-                    `mailto:${memberEmail}?subject=${vote.PublishedDivision.Title}&body=Dear ${member.value.nameAddressAs},\n\n I am writing to you regarding your vote on the recent division titled: "${vote.PublishedDivision.Title}". \n\nIt has come to my attention that you voted ${
-                      true ? "Aye" : "Noe"
-                    } for this Division. \n\n I would therefore share my [SUPPORT / CONCERN] because [ENTER REASON]. \n\n Yours Sincerely,\n\n [ENTER NAME]`
-                  )
-                }
-                title="Email"
-              >
+              <Button onClick={() => handleClick(vote)} title="Email">
                 Email your MP about this
               </Button>
-              {/* <Typography> Approve / Disapprove</Typography> */}
             </Box>
           </div>
         ))}
       </Slider>
+      {selectedVote && (
+        <EmailModal
+          setOpenEmailModal={setOpenEmailModal}
+          openEmailModal={openEmailModal}
+          vote={selectedVote}
+        />
+      )}
     </>
   );
 }
