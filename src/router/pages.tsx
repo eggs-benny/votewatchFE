@@ -11,7 +11,7 @@ const Loader = (Component) => (props) => (
 const Home = Loader(lazy(() => import("src/content/pages/Home")));
 const Member = Loader(lazy(() => import("src/content/pages/Member")))
 
-const dashboardsRoutes = [
+const pageRoutes = [
   {
     path: "/",
     element: <Navigate to="home" replace />
@@ -26,4 +26,4 @@ const dashboardsRoutes = [
   }
 ];
 
-export default dashboardsRoutes;
+export default pageRoutes;

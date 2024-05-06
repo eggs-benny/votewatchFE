@@ -7,7 +7,7 @@ export interface Member {
   links: Link[];
 }
 
-interface Link {
+export interface Link {
   rel: string;
   href: string;
   method: string;
@@ -25,7 +25,7 @@ interface Value {
   thumbnailUrl: string;
 }
 
-interface LatestHouseMembership {
+export interface LatestHouseMembership {
   membershipFrom: string;
   membershipFromId: number;
   house: number;
@@ -46,7 +46,7 @@ interface MembershipStatus {
   statusStartDate: Date;
 }
 
-interface LatestParty {
+export interface LatestParty {
   id: number;
   name: string;
   abbreviation: string;

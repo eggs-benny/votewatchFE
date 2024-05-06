@@ -2,23 +2,18 @@ import BaseLayout from "src/layouts/BaseLayout";
 
 // Routes
 import baseRoutes from "./base";
-import dashboardsRoutes from "./dashboards";
+import pageRoutes from "./pages";
 
 const router = [
   {
     path: "*",
     element: <BaseLayout />,
-    children: baseRoutes,
+    children: baseRoutes
   },
   {
     path: "/",
-    children: [
-      {
-        path: "/",
-        children: dashboardsRoutes,
-      },
-    ],
-  },
+    children: pageRoutes
+  }
 ];
 
 export default router;
