@@ -39,6 +39,7 @@ const slice = createSlice({
       state.selectedMember = action.payload;
     },
     clearMembers: (state) => {
+      state.status = SliceStatusEnum.IDLE;
       state.members = [];
     }
   },
