@@ -1,18 +1,17 @@
 import {
   Box,
+  Divider,
   Pagination,
   PaginationItem,
   Typography
 } from "@mui/material";
-import { ReactNode, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   fetchMemberContactInfo,
   selectSelectedMember,
   SliceStatusEnum
 } from "src/slices/member";
 import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 import { useNavigate } from "react-router";
 import VoteSlider from "./VoteSlider";
 import { useDispatch, useSelector } from "src/store";
@@ -23,6 +22,7 @@ import {
 } from "src/slices/vote";
 import LoadingSpinner from "src/components/Shared/LoadingSpinner";
 import { ArrowCircleLeft, ArrowCircleRight, Home } from "@mui/icons-material";
+import Header from "./Header";
 
 function Member() {
   const navigate = useNavigate();
@@ -34,9 +34,11 @@ function Member() {
   const votes = useSelector(selectVotes);
 
   useEffect(() => {
-    dispatch(fetchMemberVotes(member.value.id));
-    dispatch(fetchMemberContactInfo(member.value.id));
-  }, [dispatch, member.value.id]);
+    if (member.value?.id) {
+      dispatch(fetchMemberVotes(member.value.id));
+      dispatch(fetchMemberContactInfo(member.value.id));
+    }
+  }, [dispatch, member.value?.id]);
 
   const handleChange = (event, value) => {
     setCurrentSlide(value - 1);
@@ -44,86 +46,94 @@ function Member() {
       sliderRef.current.slickGoTo(value - 1);
     }
   };
-
-  let votesList: ReactNode;
-  switch (votesStatus) {
-    case SliceStatusEnum.SUCCEEDED:
-      votesList = (
-        <VoteSlider sliderRef={sliderRef} currentSlide={currentSlide} />
-      );
-      break;
-    case SliceStatusEnum.LOADING:
-      votesList = <LoadingSpinner />;
-      break;
+  function memberStartDate() {
+    const startDate = new Date(
+      member.value?.latestHouseMembership.membershipStartDate
+    );
+    const formattedDate = new Intl.DateTimeFormat("en-GB", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric"
+    }).format(startDate);
+    return formattedDate;
   }
 
   return (
     <Box
       sx={{ width: "100vw", minHeight: "100vh", backgroundColor: "#fffdeb" }}
     >
-      <Box
-        sx={{
-          width: "100vw",
-          overflow: "hidden",
-          backgroundColor: "#012e31",
-          py: "20px"
-        }}
-      >
+      <Header member={member} />
+      <Box display="flex" flexDirection="column" alignItems="center">
         <img
-          src="/owl-logo.png"
-          style={{
-            width: 120,
-            height: 120,
-            borderRadius: 25,
-            position: "relative",
-            left: "50%",
-            transform: "translateX(-50%)"
-          }}
-          alt={"Votewatch Owl Logo"}
-        />
-      </Box>
-      <Box display="flex" flexDirection="column" alignItems="center" py="10px">
-        <Typography fontSize={40} fontFamily={"Roboto Slab"}>
-          {member.value?.nameFullTitle}
-        </Typography>
-        <img
-          src={member.value.thumbnailUrl}
+          src={member.value?.thumbnailUrl}
           style={{
             width: 225,
             height: 225,
             border: "7px solid #012e31",
-            borderRadius: 150
+            borderRadius: "50%",
+            marginTop: "10px"
           }}
-          alt={member.value.nameFullTitle}
+          alt={member.value?.nameFullTitle}
         />
-      </Box>
-      <Box display="flex" flexDirection="column" alignItems="center" py="20px">
-        <Typography fontSize={25} fontFamily={"Roboto Slab"}>
-          Recent Commons Votes
+        <Typography
+          sx={{
+            fontSize: 20,
+            fontFamily: "Roboto Slab",
+            color: `#${member.value?.latestParty.backgroundColour}`
+          }}
+        >
+          {member.value?.latestParty.name}
         </Typography>
-        <Pagination
-          count={votes.length}
-          page={currentSlide + 1}
-          onChange={handleChange}
-          renderItem={(item) => (
-            <PaginationItem
-              slots={{ previous: ArrowCircleLeft, next: ArrowCircleRight }}
-              {...item}
-            />
-          )}
-        />
+        <Typography
+          sx={{
+            fontSize: 15,
+            fontFamily: "Roboto Slab"
+          }}
+        >
+          MP for {member.value?.latestHouseMembership.membershipFrom} since{" "}
+          {memberStartDate()}
+        </Typography>
       </Box>
-      {votesList}
+      <Typography
+        fontSize={25}
+        fontFamily="Roboto Slab"
+        sx={{ marginTop: "10px" }}
+      >
+        <Divider aria-hidden="true">Recent Commons Votes</Divider>
+      </Typography>
+      {votesStatus === SliceStatusEnum.LOADING ? (
+        <LoadingSpinner />
+      ) : (
+        <>
+          <Box
+            sx={{ width: "100%", display: "flex", justifyContent: "center" }}
+          >
+            <Pagination
+              count={votes.length}
+              page={currentSlide + 1}
+              onChange={handleChange}
+              renderItem={(item) => (
+                <PaginationItem
+                  slots={{
+                    previous: ArrowCircleLeft,
+                    next: ArrowCircleRight
+                  }}
+                  {...item}
+                />
+              )}
+            />
+          </Box>
+          <VoteSlider sliderRef={sliderRef} currentSlide={currentSlide} />
+        </>
+      )}
+
       <Box display="flex" flexDirection="column" alignItems="center">
         <Home
           aria-label="home"
-          onClick={() => navigate("/home")}
-          cursor="pointer"
           fontSize="large"
-          sx={{ color: "#012e31" }}
-        >
-          Home
-        </Home>
+          onClick={() => navigate("/home")}
+          style={{ cursor: "pointer", color: "#012e31" }}
+        />
       </Box>
     </Box>
   );

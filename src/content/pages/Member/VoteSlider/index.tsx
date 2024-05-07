@@ -1,11 +1,14 @@
-import { Box, Button, Divider, Tooltip, Typography } from "@mui/material";
+import { Box, Divider, Tooltip, Typography } from "@mui/material";
 import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import { Division } from "src/models/division";
 import { selectVotes } from "src/slices/vote";
 import { useSelector } from "src/store";
 import ResultTypography from "./ResultTypography";
 import { useState } from "react";
 import EmailModal from "src/components/Shared/EmailModal";
+import PieChart from "src/components/Shared/PieChart";
 
 interface VoteSliderProps {
   sliderRef: Slider;
@@ -61,35 +64,26 @@ function VoteSlider({ sliderRef, currentSlide }: VoteSliderProps) {
             style={{ display: currentSlide === index ? "block" : "none" }}
           >
             <Box display="flex" flexDirection="column" alignItems="center">
-              <Typography fontSize={15} fontFamily={"Roboto Slab"}>
-                {divisionDate(vote.PublishedDivision.Date)}
-              </Typography>
               <Tooltip className="" title={vote.PublishedDivision.Title}>
                 <Typography
                   sx={{
                     fontSize: "20px",
                     fontFamily: "Roboto Slab",
+                    fontWeight: "800",
                     maxWidth: "500px",
                     overflow: "hidden",
                     textOverflow: "ellipsis",
-                    whiteSpace: "nowrap"
+                    whiteSpace: "nowrap",
+                    marginBottom: "10px"
                   }}
-                  className="text-3xl font-bold underline"
                 >
                   {vote.PublishedDivision.Title}
                 </Typography>
               </Tooltip>
-              <Button
-                onClick={() =>
-                  window.open(
-                    `https://votes.parliament.uk/Votes/Commons/Division/${vote.PublishedDivision.DivisionId}`,
-                    "_blank"
-                  )
-                }
-                title={`${vote.PublishedDivision.Title}`}
-              >
-                Details of Commons Vote
-              </Button>{" "}
+              <Typography fontSize={15} fontFamily={"Roboto Slab"}>
+                Division took place on{" "}
+                {divisionDate(vote.PublishedDivision.Date)}
+              </Typography>
               <Box display="flex" flexDirection="row" alignItems="center">
                 <Box
                   px="25px"
@@ -100,7 +94,24 @@ function VoteSlider({ sliderRef, currentSlide }: VoteSliderProps) {
                   <Typography fontFamily={"Roboto Slab"}>
                     Member Voted:
                   </Typography>
-                  <Box>{memberVote(vote.MemberVotedAye)}</Box>
+                  {memberVote(vote.MemberVotedAye)}
+                </Box>
+                <Divider orientation="vertical" variant="middle" flexItem />
+                <Box
+                  px="25px"
+                  display="flex"
+                  flexDirection="column"
+                  alignItems="center"
+                >
+                  <Typography fontFamily={"Roboto Slab"}>
+                    Commons result:
+                  </Typography>
+                  <Box sx={{ width: "125px", height: "125px" }}>
+                    <PieChart
+                      ayeCount={vote.PublishedDivision.AyeCount}
+                      noeCount={vote.PublishedDivision.NoCount}
+                    />
+                  </Box>
                 </Box>
                 <Divider orientation="vertical" variant="middle" flexItem />
                 <Box
@@ -112,16 +123,35 @@ function VoteSlider({ sliderRef, currentSlide }: VoteSliderProps) {
                   <Typography fontFamily={"Roboto Slab"}>
                     House Voted:
                   </Typography>
-                  <Box>{houseVote(vote)}</Box>
+                  {houseVote(vote)}
                 </Box>
               </Box>
-              <Typography fontFamily={"Roboto Slab"}>
-                Commons result: {vote.PublishedDivision.AyeCount} Ayes,{" "}
-                {vote.PublishedDivision.NoCount} Noes
-              </Typography>
-              <Button onClick={() => handleClick(vote)} title="Email">
-                Email your MP about this
-              </Button>
+              <Box display="flex" flexDirection="row" alignItems="center" paddingX="20px">
+                <Typography
+                  className="text-3xl font-bold underline"
+                  sx={{ cursor: "pointer" }}
+                  fontFamily={"Roboto Slab"}
+                  onClick={() =>
+                    window.open(
+                      `https://votes.parliament.uk/Votes/Commons/Division/${vote.PublishedDivision.DivisionId}`,
+                      "_blank"
+                    )
+                  }
+                  title={`${vote.PublishedDivision.Title}`}
+                >
+                  Details of vote
+                </Typography>
+                <Box paddingX="20px"/>
+                <Typography
+                  className="text-3xl font-bold underline"
+                  sx={{ cursor: "pointer" }}
+                  fontFamily={"Roboto Slab"}
+                  onClick={() => handleClick(vote)}
+                  title="Email"
+                >
+                  Email your MP about this
+                </Typography>
+              </Box>
             </Box>
           </div>
         ))}
