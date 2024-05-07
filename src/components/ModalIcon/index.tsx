@@ -1,5 +1,6 @@
 import { Email } from "@mui/icons-material";
 import { Box } from "@mui/material";
+import { modalIconStyle } from "src/styles/modal";
 
 function ModalIcon() {
   return (
@@ -15,12 +16,7 @@ function ModalIcon() {
       }}
     >
       <Email
-        sx={{
-          color: "#FFA500",
-          height: "60%",
-          width: "60%",
-          margin: "auto"
-        }}
+        sx={modalIconStyle}
       />
     </Box>
   );

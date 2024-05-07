@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, useTheme } from "@mui/material";
 import { Member } from "src/models/member";
 
 interface HeaderProps {
@@ -6,18 +6,19 @@ interface HeaderProps {
 }
 
 function Header({ member }: HeaderProps) {
+  const theme = useTheme();
   return (
     <>
       <Box
         sx={{
           width: "100vw",
           overflow: "hidden",
-          backgroundColor: "#012e31",
+          backgroundColor: "background.paper",
           py: "10px",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          justifyContent: "center"
+          justifyContent: "center",
         }}
       >
         <img
@@ -29,7 +30,11 @@ function Header({ member }: HeaderProps) {
           }}
           alt={"Votewatch Owl Logo"}
         />
-        <Typography fontSize={30} fontFamily="Roboto Slab" color="#fffdeb">
+        <Typography
+          fontSize="h1.fontSize"
+          fontFamily="h1.fontFamily"
+          color={theme.palette.background.default}
+        >
           {member.value?.nameFullTitle}
         </Typography>
       </Box>

@@ -13,7 +13,7 @@ interface VoteState {
 const initialState: VoteState = {
   votes: [],
   status: SliceStatusEnum.IDLE,
-  error: null
+  error: ""
 };
 
 const slice = createSlice({
@@ -31,7 +31,7 @@ const slice = createSlice({
       })
       .addCase(fetchMemberVotes.rejected, (state, action) => {
         state.status = SliceStatusEnum.FAILED;
-        state.error = action.error.message;
+        state.error = action.error.message as string;
       });
   }
 });
@@ -41,6 +41,7 @@ export const fetchMemberVotes = createAsyncThunk<Division[], number>(
   "votes/fetchRecent",
   async (memberId, thunkAPI) => {
     try {
+      // fetches 10 most recent votes
       const response = await fetch(
         `https://commonsvotes-api.parliament.uk/data/divisions.json/membervoting?queryParameters.memberId=${memberId}&queryParameters.take=10`
       );

@@ -3,7 +3,12 @@ import { Chart, ArcElement, Tooltip } from "chart.js";
 
 Chart.register(ArcElement, Tooltip);
 
-const PieChart = ({ ayeCount, noeCount }) => {
+interface PieChartProps {
+  ayeCount: number,
+  noeCount: number
+}
+
+const PieChart = ({ ayeCount, noeCount }: PieChartProps) => {
   const data = {
     datasets: [
       {

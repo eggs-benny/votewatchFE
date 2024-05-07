@@ -2,6 +2,7 @@ import { Suspense, lazy } from "react";
 import { Navigate } from "react-router-dom";
 import SuspenseLoader from "src/components/Shared/SuspenseLoader";
 
+//@ts-ignore
 const Loader = (Component) => (props) => (
   <Suspense fallback={<SuspenseLoader />}>
     <Component {...props} />

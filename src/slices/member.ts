@@ -16,7 +16,7 @@ export enum SliceStatusEnum {
 }
 
 interface MemberState {
-  selectedMember: Member | null;
+  selectedMember: Member;
   members: Member[];
   contactInfo: ContactInfo;
   status: SliceStatusEnum;
@@ -24,11 +24,11 @@ interface MemberState {
 }
 
 const initialState: MemberState = {
-  selectedMember: null,
+  selectedMember: {} as Member,
   members: [],
-  contactInfo: null,
+  contactInfo: {} as ContactInfo,
   status: SliceStatusEnum.IDLE,
-  error: null
+  error: ""
 };
 
 const slice = createSlice({
@@ -54,7 +54,7 @@ const slice = createSlice({
       })
       .addCase(fetchMembersList.rejected, (state, action) => {
         state.status = SliceStatusEnum.FAILED;
-        state.error = action.error.message;
+        state.error = action.error.message as string;
       })
       .addCase(fetchLocalMember.pending, (state) => {
         state.status = SliceStatusEnum.LOADING;
@@ -64,7 +64,7 @@ const slice = createSlice({
       })
       .addCase(fetchLocalMember.rejected, (state, action) => {
         state.status = SliceStatusEnum.FAILED;
-        state.error = action.error.message;
+        state.error = action.error.message as string;
       })
       .addCase(fetchMemberContactInfo.pending, (state) => {
         state.status = SliceStatusEnum.LOADING;
@@ -75,7 +75,7 @@ const slice = createSlice({
       })
       .addCase(fetchMemberContactInfo.rejected, (state, action) => {
         state.status = SliceStatusEnum.FAILED;
-        state.error = action.error.message;
+        state.error = action.error.message as string;
       });
   }
 });
@@ -85,6 +85,7 @@ export const fetchMembersList = createAsyncThunk<Member[], string>(
   "members/nameFetch",
   async (mpNameQuery, thunkAPI) => {
     try {
+      // Search parliament's API with name query, and checks the member is currently sitting
       const response = await fetch(
         `https://members-api.parliament.uk/api/Members/Search?Name=${mpNameQuery}&IsCurrentMember=true`
       );
@@ -109,11 +110,13 @@ export const fetchLocalMember = createAsyncThunk<void, string>(
   "members/postcodeFetch",
   async (postcode, thunkAPI) => {
     try {
+      // Initial search using They Work For You API to get name of member
       const twfyKey = process.env.REACT_APP_TWFY_KEY;
       const response = await fetch(
         `https://www.theyworkforyou.com/api/getMP?key=${twfyKey}&postcode=${postcode}&output=json`
       );
       const res: TwfyMember = await response.json();
+      // Use member name to fetch local member's details
       const localMember = res.full_name;
       thunkAPI.dispatch(fetchMembersList(localMember));
     } catch (error) {

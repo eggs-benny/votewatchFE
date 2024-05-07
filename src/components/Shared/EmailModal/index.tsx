@@ -1,5 +1,5 @@
 import { Box, Button, Modal, TextField, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useSelector } from "src/store";
 import {
   selectMemberContactInfo,
@@ -15,8 +15,19 @@ import {
   modalTextStyle
 } from "src/styles/modal";
 import ModalIcon from "src/components/ModalIcon";
+import { Division } from "src/models/division";
 
-const EmailModal = ({ setOpenEmailModal, openEmailModal, vote }) => {
+interface EmailModalProps {
+  setOpenEmailModal: (boolean: boolean) => void;
+  openEmailModal: boolean;
+  vote: Division;
+}
+
+const EmailModal = ({
+  setOpenEmailModal,
+  openEmailModal,
+  vote
+}: EmailModalProps) => {
   const [message, setMessage] = useState<string>("");
   const [fullName, setFullName] = useState<string>("");
   const [nameError, setNameError] = useState<boolean>(false);
@@ -69,13 +80,13 @@ const EmailModal = ({ setOpenEmailModal, openEmailModal, vote }) => {
     window.open(`mailto:${memberEmail}?subject=${subject}&body=${body}`);
   };
 
-  const handleNameInput = (e) => {
+  const handleNameInput = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setFullName(value);
     setNameError(value.trim() === "");
   };
 
-  const handleMessageInput = (e) => {
+  const handleMessageInput = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setMessage(value);
     setMessageError(value.trim() === "");

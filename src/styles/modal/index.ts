@@ -3,9 +3,10 @@ export const modalStyle = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 600,
-  minHeight: "390px",
-  bgcolor: "#012e31",
+  width: "40%",
+  minHeight: "30vh",
+
+  bgcolor: "#006064",
   backgroundImage: `linear-gradient(to top, #012e31, transparent)`,
   border: "3px solid #fffdeb",
   boxShadow: "0 8px 12px rgba(0, 0, 0, 0.2)",
@@ -19,26 +20,25 @@ export const modalTextFieldStyle = {
   padding: "3px",
   borderRadius: "10px",
   "& .MuiInputBase-root": {
-    backgroundColor: "#fffdeb",
+    backgroundColor: "background.default",
     borderRadius: "10px"
   }
 };
 
 export const modalCancelButtonStyle = {
-  color: "#fffdeb",
-  fontFamily: "Roboto Slab",
+  color: "background.default",
   fontWeight: 400,
+  textTransform: "capitalize",
   fontSize: "16px",
   marginRight: "30px"
 };
 
 export const modalActionButtonStyle = {
-  backgroundColor: "#021d32",
-  color: "#fffdeb",
+  backgroundColor: "secondary.main",
+  color: "background.default",
   textTransform: "capitalize",
   marginLeft: "30px",
   padding: "10px 30px",
-  fontFamily: "Roboto Slab",
   fontWeight: 700,
   fontSize: "16px"
 };
@@ -53,17 +53,15 @@ export const modalIconStyle = {
 export const modalTextStyle = {
   fontSize: "23px",
   fontWeight: "bold",
-  fontFamily: "Roboto Slab",
-  color: "#fffdeb",
+  color: "background.default",
   padding: "5px",
   marginBottom: "15px"
 };
 
 export const modalSubtextStyle = {
   fontSize: "15px",
-  fontFamily: "Roboto Slab",
   textAlign: "left",
   fontWeight: "400",
-  color: "#fffdeb",
+  color: "background.default",
   padding: "5px"
 };

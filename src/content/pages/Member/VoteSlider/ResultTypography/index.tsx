@@ -1,16 +1,14 @@
-import { Typography } from "@mui/material";
+import { Typography, useTheme } from "@mui/material";
 
-interface ResultTypographyProps {
-  voteResult: string;
-  color: string;
-}
-
-const ResultTypography = ({ voteResult, color }: ResultTypographyProps) => {
+const ResultTypography = ({ vote }: { vote: boolean }) => {
+  const voteResult = vote ? "AYE" : "NO";
+  const color = vote ? "forestgreen" : "firebrick";  
+  const theme = useTheme()
   return (
     <Typography
       style={{
         fontSize: 60,
-        fontFamily: "Roboto Slab",
+        fontFamily: theme.typography.h1.fontFamily,
         color: color,
         fontWeight: "900",
         alignItems: "center"

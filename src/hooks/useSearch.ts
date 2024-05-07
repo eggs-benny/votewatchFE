@@ -1,7 +1,7 @@
 import { debounce } from "@mui/material";
 import { AsyncThunk } from "@reduxjs/toolkit";
 import { AsyncThunkConfig } from "@reduxjs/toolkit/dist/createAsyncThunk";
-import { useMemo, useState } from "react";
+import { ChangeEvent, useMemo, useState } from "react";
 import { Member } from "src/models/member";
 import { useDispatch } from "src/store";
 import * as Yup from "yup";
@@ -24,6 +24,7 @@ export const useSearch = ({
   const [returnPrompt, setReturnPrompt] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Validates & debounces search query
   const validateInput = useMemo(
     () =>
       debounce((value) => {
@@ -41,7 +42,7 @@ export const useSearch = ({
     [validationSchema, validationKey]
   );
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setQuery(value);
     validateInput(value);

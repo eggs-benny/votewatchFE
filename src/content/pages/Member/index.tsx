@@ -5,7 +5,7 @@ import {
   PaginationItem,
   Typography
 } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import {
   fetchMemberContactInfo,
   selectSelectedMember,
@@ -40,7 +40,11 @@ function Member() {
     }
   }, [dispatch, member.value?.id]);
 
-  const handleChange = (event, value) => {
+  const handleChange = (
+    event: ChangeEvent<unknown>,
+    value: number
+  ) => {
+    event.preventDefault();
     setCurrentSlide(value - 1);
     if (sliderRef.current) {
       sliderRef.current.slickGoTo(value - 1);
@@ -60,7 +64,13 @@ function Member() {
 
   return (
     <Box
-      sx={{ width: "100vw", minHeight: "100vh", backgroundColor: "#fffdeb" }}
+      sx={{
+        width: "100vw",
+        minHeight: "100vh",
+        fontSize: "h1.fontSize",
+        fontFamily: "h1.fontFamily",
+        color: "background.default"
+      }}
     >
       <Header member={member} />
       <Box display="flex" flexDirection="column" alignItems="center">
@@ -77,37 +87,28 @@ function Member() {
         />
         <Typography
           sx={{
-            fontSize: 20,
-            fontFamily: "Roboto Slab",
+            fontSize: "h3.fontSize",
+            fontWeight: 600,
             color: `#${member.value?.latestParty.backgroundColour}`
           }}
         >
           {member.value?.latestParty.name}
         </Typography>
-        <Typography
-          sx={{
-            fontSize: 15,
-            fontFamily: "Roboto Slab"
-          }}
-        >
+        <Typography>
           MP for {member.value?.latestHouseMembership.membershipFrom} since{" "}
           {memberStartDate()}
         </Typography>
       </Box>
-      <Typography
-        fontSize={25}
-        fontFamily="Roboto Slab"
-        sx={{ marginTop: "10px" }}
-      >
-        <Divider aria-hidden="true">Recent Commons Votes</Divider>
+      <Typography>
+        <Divider sx={{ marginTop: "10px" }} aria-hidden="true">
+          Recent Commons Votes
+        </Divider>
       </Typography>
       {votesStatus === SliceStatusEnum.LOADING ? (
         <LoadingSpinner />
       ) : (
         <>
-          <Box
-            sx={{ width: "100%", display: "flex", justifyContent: "center" }}
-          >
+          <Box sx={{ display: "flex", justifyContent: "center" }}>
             <Pagination
               count={votes.length}
               page={currentSlide + 1}
@@ -127,12 +128,17 @@ function Member() {
         </>
       )}
 
-      <Box display="flex" flexDirection="column" alignItems="center">
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        sx={{ color: "background.paper" }}
+      >
         <Home
           aria-label="home"
           fontSize="large"
           onClick={() => navigate("/home")}
-          style={{ cursor: "pointer", color: "#012e31" }}
+          style={{ cursor: "pointer" }}
         />
       </Box>
     </Box>
