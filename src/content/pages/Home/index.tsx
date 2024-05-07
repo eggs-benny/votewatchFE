@@ -12,6 +12,7 @@ import {
 } from "src/slices/member";
 import LoadingSpinner from "src/components/Shared/LoadingSpinner";
 import { useNavigate } from "react-router";
+import Footer from "src/components/Shared/Footer";
 
 function Home() {
   const navigate = useNavigate();
@@ -27,73 +28,87 @@ function Home() {
   }, [dispatch]);
 
   return (
-    <Box
-      sx={{
-        width: "100vw",
-        minHeight: "100vh",
-        bgcolor: "background.default"
-      }}
-    >
+    <>
       <Box
         sx={{
           width: "100vw",
-          overflow: "hidden",
-          bgcolor: "background.paper",
-          py: "50px"
+          minHeight: "97vh",
+          bgcolor: "background.default"
         }}
       >
-        <img
-          src="/owl-logo.png"
-          style={{
-            width: 250,
-            height: 250,
-            borderRadius: 25,
-            position: "relative",
-            left: "50%",
-            transform: "translateX(-50%)"
+        <Box
+          sx={{
+            width: "100vw",
+            overflow: "hidden",
+            bgcolor: "background.paper",
+            py: "50px"
           }}
-          alt={"Votewatch Owl Logo"}
-        />
-      </Box>
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        sx={{ py: "50px" }}
-      >
-        <Typography fontSize="h1.fontSize" fontFamily="h1.fontFamily">
-          Welcome to Votewatch
-        </Typography>
-        <Box display="flex" flexDirection="row" alignItems="center">
-          <MemberPostcodeSearch onSearch={() => setIsPostcodeSearch(true)} />
-          <Divider orientation="vertical" variant="middle" flexItem />
-          <MemberNameSearch onSearch={() => setIsPostcodeSearch(false)} />
+        >
+          <img
+            src="/owl-logo.png"
+            style={{
+              width: 250,
+              height: 250,
+              borderRadius: 25,
+              position: "relative",
+              left: "50%",
+              transform: "translateX(-50%)"
+            }}
+            alt={"Votewatch Owl Logo"}
+          />
         </Box>
-        {fetchMembersStatus === SliceStatusEnum.LOADING ? (
-          <LoadingSpinner />
-        ) : (
-          <>
-            {isPostcodeSearch !== null && (
-              <Typography fontSize={20}>
-                {isPostcodeSearch ? "Your local MP is:" : "Search results:"}
-              </Typography>
-            )}
-            {members?.map((member) => (
-              <Button
-                key={member.value.id}
-                sx={{ color: "secondary.main", textTransform: "capitalize" }}
-                onClick={() => {
-                  dispatch(setSelectedMember(member));
-                  navigate(`/member/${member?.value?.id}`);
-                }}
-              >
-                {member.value.nameDisplayAs}
-              </Button>
-            ))}
-          </>
-        )}
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          sx={{ py: "50px" }}
+        >
+          <Typography fontSize="h1.fontSize" fontFamily="h1.fontFamily">
+            Welcome to Votewatch
+          </Typography>
+          <Box display="flex" flexDirection="row" alignItems="center">
+            <MemberPostcodeSearch onSearch={() => setIsPostcodeSearch(true)} />
+            <Divider orientation="vertical" variant="middle" flexItem />
+            <MemberNameSearch onSearch={() => setIsPostcodeSearch(false)} />
+          </Box>
+          {fetchMembersStatus === SliceStatusEnum.LOADING ? (
+            <LoadingSpinner />
+          ) : (
+            <>
+              {isPostcodeSearch !== null && (
+                <>
+                  <Typography fontSize={20}>
+                    {isPostcodeSearch ? "Your local MP is:" : "Search results:"}
+                  </Typography>
+                  {members.length > 0 ? (
+                    members.map((member) => (
+                      <Button
+                        key={member.value.id}
+                        sx={{
+                          color: "secondary.main",
+                          textTransform: "capitalize"
+                        }}
+                        onClick={() => {
+                          dispatch(setSelectedMember(member));
+                          navigate(`/member/${member.value.id}`);
+                        }}
+                      >
+                        {member.value.nameDisplayAs}
+                      </Button>
+                    ))
+                  ) : (
+                    <Typography>
+                      No members could be found, please try a different term.
+                    </Typography>
+                  )}
+                </>
+              )}
+            </>
+          )}
+        </Box>
       </Box>
-    </Box>
+      <Footer fixed={true} />
+    </>
   );
 }
 

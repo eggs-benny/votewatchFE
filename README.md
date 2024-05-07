@@ -1,46 +1,94 @@
-# Getting Started with Create React App
+# Votewatch
+
+## Introduction
+
+Keep track of what your representative is doing in the House of Commons and let them know what you think about how they do it.
+
+[Votewatch](https://main.dd2wf6zge1w12.amplifyapp.com/home) is a TypeScript React web application that enables users to search for their local MP or any MP by name, view detailed information about their recent voting activities, and get in touch with them to give feedback. The webapp provides insights into MPs' decisions in parliament, facilitating a better political transparency and understanding of their political stances and actions.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Table of Contents
 
-In the project directory, you can run:
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Dependencies](#dependencies)
+- [Roadmap](#roadmap)
+- [Known Issues](#known-issues)
+- [License](#license)
 
-### `npm start`
+## Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- **Search for MPs by postcode**: Easily find your local MP with just a postcode.
+- **Search MPs by name**: Look up MPs by entering their names.
+- **MP details and voting history**: Access detailed profiles of MPs including recent votes.
+- **Email MPs directly**: Contact MPs directly with pre-populated text that users can amend.
+- **Access to additional information**: Follow links to additional information and sources.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Installation 
 
-### `npm test`
+To set up Votewatch locally, follow these steps:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. Clone the repository from its source: [here](https://github.com/eggs-benny/votewatchFE).
 
-### `npm run build`
+2. Create a hidden .env file in the project root directory and add the following key:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+    ```json
+    REACT_APP_TWFY_KEY=[add-theyworkforyou-API-key-here]
+    ```
+The API key can be requested from [They Work For You API](https://www.theyworkforyou.com/api/).
+N.B. Please keep this hidden so as not to expose your key publically.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+3. Navigate to the project directory and install the dependencies:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+    ```bash
+    npm i
+    ```
 
-### `npm run eject`
+## Usage
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+To run Votewatch on your local machine, execute the following command in the project directory:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+    ```bash
+    npm start
+    ```
+This will start the local server on localhost:3000.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Alternatively the webapp is deployed via AWS Amplify [here](https://main.dd2wf6zge1w12.amplifyapp.com/home)
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Dependencies
 
-## Learn More
+Votewatch is built using several key technologies and libraries:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- react (inc Create React App dependencies)
+- redux
+- prettier
+- typeScript
+- yup
+- mui
+- slick-carousel
+- chart.js
+- nprogress
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Roadmap
+### Improvements
+- Increase test coverage
+- Mobile Optimisation and/or build mobile app w/ React Native
+- Show if MP was a teller in a commons vote
+- Show if MP abstained
+
+### Features
+- Add a backend to allow users to register & login, then save their local MPs
+- Notify users when a new vote has taken place in the commons (email or notification)
+- Allow users to approve/disapprove of MP's votes, and track these approvals
+- Email directly from the browser, not mailto:
+- Add MP's abstinence record for recent votes to their page.
+
+## Known Issues
+- Manually typing a member ID currently just reloads the page: http://localhost:3000/member/[memberId]
+- Styling on error handling to be fixed
+
+## Licenses
+Contains Parliamentary information licensed under the [Open Parliament Licence v3.0](#https://www.parliament.uk/site-information/copyright/).
+Data service provided by [TheyWorkForYou](#https://www.theyworkforyou.com/)

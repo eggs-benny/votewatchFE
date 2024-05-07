@@ -30,10 +30,6 @@ function VoteSlider({ sliderRef, currentSlide }: VoteSliderProps) {
     autoplay: false
   };
 
-  function memberVote(mpVote: boolean) {
-    return <ResultTypography vote={mpVote} />;
-  }
-
   function houseVote(vote: Division) {
     const isAyeMajority =
       vote.PublishedDivision.AyeCount > vote.PublishedDivision.NoCount;
@@ -80,7 +76,7 @@ function VoteSlider({ sliderRef, currentSlide }: VoteSliderProps) {
                   alignItems="center"
                 >
                   <Typography>Member Voted:</Typography>
-                  {memberVote(vote.MemberVotedAye)}
+                  <ResultTypography vote={vote.MemberVotedAye} />
                 </Box>
                 <Divider orientation="vertical" variant="middle" flexItem />
                 <Box

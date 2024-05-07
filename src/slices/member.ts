@@ -87,7 +87,7 @@ export const fetchMembersList = createAsyncThunk<Member[], string>(
     try {
       // Search parliament's API with name query, and checks the member is currently sitting
       const response = await fetch(
-        `https://members-api.parliament.uk/api/Members/Search?Name=${mpNameQuery}&IsCurrentMember=true`
+        `https://members-api.parliament.uk/api/Members/Search?Name=${mpNameQuery}&House=1&IsCurrentMember=true`
       );
       const mpData: MpData = await response.json();
       const members = mpData.items;

@@ -50,6 +50,7 @@ const EmailModal = ({
     setOpenEmailModal(!openEmailModal);
   };
 
+  // Handles undefined email entries in Parliament API
   function findMemberEmail(contactInfo: ContactInfo) {
     if (contactInfo?.value[0]?.email !== undefined) {
       return contactInfo.value[0].email;
@@ -60,6 +61,23 @@ const EmailModal = ({
     return new Error("Can't find MP's Email");
   }
 
+  const memberEmail = findMemberEmail(contactInfo);
+  if (memberEmail instanceof Error) {
+    alert(memberEmail.message);
+    return;
+  }
+
+    // Handles null name entries in Parliament API
+    function memberAddressAs() {
+      if (member?.value.nameAddressAs === null) {
+        return member?.value.nameDisplayAs;
+      }
+      return member?.value.nameAddressAs;
+    }
+
+    const memberName = memberAddressAs();
+
+    // Formats email and opens email window for final send
   const handleSubmit = () => {
     if (!fullName.trim() || !message.trim()) {
       setNameError(!fullName.trim());
@@ -67,15 +85,10 @@ const EmailModal = ({
       return;
     }
 
-    const memberEmail = findMemberEmail(contactInfo);
-    if (memberEmail instanceof Error) {
-      alert(memberEmail.message);
-      return;
-    }
 
-    const subject = encodeURIComponent(vote?.PublishedDivision?.Title);
+    const subject = encodeURIComponent(`Regarding: ${vote?.PublishedDivision?.Title}`);
     const body = encodeURIComponent(
-      `Dear ${member.value.nameAddressAs},\n\n${message}\n\nYours Sincerely,\n${fullName}`
+      `Dear ${memberName},\n\n${message}\n\nYours Sincerely,\n${fullName}`
     );
     window.open(`mailto:${memberEmail}?subject=${subject}&body=${body}`);
   };
